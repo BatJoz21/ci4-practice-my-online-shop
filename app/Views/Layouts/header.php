@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <a class="navbar-brand mb-0 h1 text-light" href="<?= base_url('') ?>">MyOnlineShop</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <button class="navbar-toggler px-4" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 
-    <div class="collapse navbar-collapse" id="mainNav">
+    <div class="collapse navbar-collapse px-4" id="mainNav">
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
                 <a class="nav-link text-light" href="<?= base_url('') ?>">Home</a>

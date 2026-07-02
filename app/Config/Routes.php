@@ -6,3 +6,5 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('register', 'Auth::registerPage');
 $routes->get('login', 'Auth::loginPage');
+
+$routes->get('products', 'Products::index');

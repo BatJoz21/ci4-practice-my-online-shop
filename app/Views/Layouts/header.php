@@ -18,15 +18,15 @@
         </ul>
 
         <ul class="navbar-nav ms-auto">
-            <?php if(session()->get('isLoggedIn')): ?>
-                <?php if(session()->get('role') === 'customer'): ?>
+            <?php if(session()->get('logged_in')): ?>
+                <?php if(session('user')['role'] === 'customer'): ?>
                     <li class="nav-item">
                         <a class="nav-link position-relative text-light" href="<?= base_url("cart") ?>">
                             My Cart
                             <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
                         </a>
                     </li>
-                <?php elseif(session()->get('role') === 'merchant'): ?>
+                <?php elseif(session('user')['role'] === 'merchant'): ?>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="<?= base_url("my-product") ?>">My Products</a>
                     </li>

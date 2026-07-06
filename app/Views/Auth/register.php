@@ -9,16 +9,9 @@
         <div class="border rounded-3 shadow mx-auto p-4" style="width: 500px;">
             <?= form_open("register") ?>
                 <div class="mb-3 row" style="width: 400px;">
-                    <label for="full_name" class="col-sm-3 col-form-label">Full Name</label>
+                    <label for="name" class="col-sm-3 col-form-label">Full Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="full_name" id="full_name">
-                    </div>
-                </div>
-
-                <div class="mb-3 row" style="width: 400px;">
-                    <label for="nickname" class="col-sm-3 col-form-label">Nickname</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" name="nickname" id="nickname">
+                        <input type="text" class="form-control" name="name" id="name">
                     </div>
                 </div>
 

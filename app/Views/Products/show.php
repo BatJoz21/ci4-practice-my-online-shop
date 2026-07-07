@@ -27,6 +27,23 @@
                 <input type="hidden" name="product_id" value="<?= esc($product["id"]) ?>">
 
                 <?php if(!empty($variants)): ?>
+                    <div class="mb-3">
+                        <label for="variant_id" class="form-label">Size</label>
+                        <select name="variant_id" id="variant_id" class="form-select" style="max-width: 250px;">
+                            <?php foreach($variants as $variant): ?>
+                                <option
+                                    value="<?= $variant['id'] ?>"
+                                    data-price="<?= $product['price'] + $variant['price_modifier'] ?>"
+                                    data-stock="<?= $variant['stock'] ?>"
+                                    <?= ($variant["stock"] <= 0) ? "disabled" : "" ?>
+                                >
+                                    <?= esc($variant['name']) ?>
+                                    <?= $variant["stock"] <= 0 ? '(Out of stock)' : '' ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <p class="text-muted small" id="stockInfo"></p>
                 <?php endif; ?>
 
                 <div class="mb-3">

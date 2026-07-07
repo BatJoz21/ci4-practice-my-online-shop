@@ -24,7 +24,7 @@
                         </li>
                     <?php elseif(session('user')['role'] === 'merchant' || session('user')['role'] === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light text-nowrap" href="<?= base_url("my-product") ?>">My Products</a>
+                            <a class="nav-link text-light text-nowrap" href="<?= base_url("my-products") ?>">My Products</a>
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>

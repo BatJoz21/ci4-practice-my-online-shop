@@ -16,6 +16,13 @@ $routes->get('session-test', function () {
 $routes->get('products', 'Products::index');
 $routes->get('products/(:num)/image', 'Products::getProductImage/$1');
 
-$routes->group('', ['filter' => 'jwtauth'], function($routes) {
+// Customer routes
+$routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'jwtauth'], function($routes) {
     $routes->get('products/(:num)', 'Products::show/$1');
+});
+
+// Merchant routes
+$routes->group('', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'merchant'], function($routes) {
+    $routes->get('my-products', 'Products::index');
+    $routes->get('products/new', 'Products::new');
 });

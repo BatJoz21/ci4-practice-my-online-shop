@@ -43,15 +43,4 @@ class Products extends BaseController
                               ->setHeader("Content-Length", strlen($body))
                               ->setBody($body);
     }
-
-    public function show(int $id)
-    {
-        $response = $this->api->getProduct($id);
-
-        if($response["success"]) {
-            return view("Products/show", ["product" => $response["data"]]);
-        }
-
-        return view("Products/index"); // ToDo: make a custom error page 
-    }
 }

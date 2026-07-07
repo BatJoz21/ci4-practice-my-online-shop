@@ -2,51 +2,53 @@
     <div class="container-fluid">
         <a class="navbar-brand mb-0 h1 text-light" href="<?= base_url('') ?>">MyOnlineShop</a>
 
-        <button class="navbar-toggler px-4" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-    </div>
 
-    <div class="collapse navbar-collapse px-4" id="mainNav">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link text-light" href="<?= base_url('') ?>">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="<?= base_url('products') ?>">Products</a>
-            </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-light text-nowrap" href="<?= base_url('') ?>">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light text-nowrap" href="<?= base_url('products') ?>">Products</a>
+                </li>
+                <?php if(session()->get('logged_in')): ?>
+                    <?php if(session('user')['role'] === 'customer'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("cart") ?>">
+                                My Cart
+                                <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                            </a>
+                        </li>
+                    <?php elseif(session('user')['role'] === 'merchant' || session('user')['role'] === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-light text-nowrap" href="<?= base_url("my-product") ?>">My Products</a>
+                        </li>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </ul>
 
-        <ul class="navbar-nav ms-auto">
-            <?php if(session()->get('logged_in')): ?>
-                <?php if(session('user')['role'] === 'customer'): ?>
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <?php if(session()->get('logged_in')): ?>
                     <li class="nav-item">
-                        <a class="nav-link position-relative text-light" href="<?= base_url("cart") ?>">
-                            My Cart
-                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-                        </a>
+                        <a class="nav-link text-light text-nowrap" href="<?= base_url("profile") ?>"><?= esc(session('user')['name']) ?></a>
                     </li>
-                <?php elseif(session('user')['role'] === 'merchant'): ?>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="<?= base_url("my-product") ?>">My Products</a>
+                        <?= form_open('logout') ?>
+                            <button class="nav-link text-light" type="submit">Logout</button>
+                        </form>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="<?= base_url("login") ?>">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="<?= base_url("register") ?>">Register</a>
                     </li>
                 <?php endif; ?>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="<?= base_url("profile") ?>"><?= esc(session()->get("username")) ?></a>
-                </li>
-                <li class="nav-item">
-                    <?= form_open('logout') ?>
-                        <button class="nav-link text-light" type="submit">Logout</button>
-                    </form>
-                </li>
-            <?php else: ?>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="<?= base_url("login") ?>">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="<?= base_url("register") ?>">Register</a>
-                </li>
-            <?php endif; ?>
-        </ul>
+            </ul>
+        </div>
     </div>
 </nav>

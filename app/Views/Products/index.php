@@ -16,7 +16,11 @@
                 <div class="col-md-3">
                     <select name="category_id" id="category_id" class="form-select">
                         <option value="">All Categories</option>
-                        <!-- ToDo: get all listed category -->
+                        <?php if(!empty($categories)): ?>
+                            <?php foreach($categories as $category): ?>
+                                <option value="<?= $category["id"] ?>"><?= esc($category["name"]) ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </select>
                 </div>
 
@@ -33,15 +37,15 @@
             <?php foreach($products as $product): ?>
                 <div class="col">
                     <div class="card h-100 shadow-sm">
-                        <img src="#" class="card-img-top" alt="<?= esc($product["name"]) ?>" style="height: 180px; object-fit: cover;">
+                        <img src="<?= site_url("products/" . $product["id"] . "/image") ?>" class="card-img-top" alt="<?= esc($product["name"]) ?>" style="height: 180px; object-fit: cover;">
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title"><?= esc($product["name"]) ?></h6>
                             <p class="card-text fw-bold mb-2">
                                 Rp<?= number_format($product["price"], 0, ",", ".") ?>
                             </p>
 
-                            <div class="mt-auto d-grip gap-2">
-                                <a href="products/<?= esc($product["id"]) ?>" class="btn btn-outlined-secondary btn-sm">View</a>
+                            <div class="mt-auto d-grid gap-2">
+                                <a href="products/<?= esc($product["id"]) ?>" class="btn btn-outline-primary btn-sm">View</a>
                             </div>
                         </div>
                     </div>

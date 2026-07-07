@@ -15,3 +15,7 @@ $routes->get('session-test', function () {
 
 $routes->get('products', 'Products::index');
 $routes->get('products/(:num)/image', 'Products::getProductImage/$1');
+
+$routes->group('', ['filter' => 'jwtauth'], function($routes) {
+    $routes->get('products/(:num)', 'Products::show/$1');
+});

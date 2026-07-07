@@ -29,7 +29,7 @@ class Products extends BaseController
             return view("Products/index", ["products" => $products, "categories" => $categories]);
         }
 
-        return view("Products/index");
+        return view("Products/index"); // ToDo: make a custom error page
     }
 
     public function getProductImage(int $id)
@@ -42,5 +42,16 @@ class Products extends BaseController
                               ->setHeader("Content-Type", $response->getHeaderLine("Content-Type"))
                               ->setHeader("Content-Length", strlen($body))
                               ->setBody($body);
+    }
+
+    public function show(int $id)
+    {
+        $response = $this->api->getProduct($id);
+
+        if($response["success"]) {
+            return view("Products/show", ["product" => $response["data"]]);
+        }
+
+        return view("Products/index"); // ToDo: make a custom error page 
     }
 }

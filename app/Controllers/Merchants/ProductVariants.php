@@ -4,14 +4,17 @@ namespace App\Controllers\Merchants;
 
 use App\Controllers\BaseController;
 use App\Services\ProductsApiService;
+use App\Services\ProductsVariantApiService;
 
 class ProductVariants extends BaseController
 {
-    private ProductsApiService $api;
+    private ProductsApiService $productApi;
+    private ProductsVariantApiService $api;
 
     public function __construct()
     {
-        $this->api = new ProductsApiService();
+        $this->productApi = new ProductsApiService();
+        $this->api = new ProductsVariantApiService();
     }
 
     public function create(int $id)
@@ -35,7 +38,7 @@ class ProductVariants extends BaseController
 
     public function edit(int $id, int $variant_id)
     {
-        $productResponse = $this->api->getProduct($id);
+        $productResponse = $this->productApi->getProduct($id);
         if(!$productResponse["success"]) {
             return redirect()->to("my-products")
                              ->with("errors", [$productResponse["message"]]);

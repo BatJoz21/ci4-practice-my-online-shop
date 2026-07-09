@@ -46,7 +46,7 @@
                                 <a href="<?= base_url("my-products/" . $product["id"]) ?>" class="btn btn-sm btn-outline-info">Show</a>
                             </td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a href="<?= base_url("my-products/" . $product["id"] . "/edit") ?>" class="btn btn-sm btn-outline-primary">Edit</a>
                             </td>
                             <td class="text-center">
                                 <?= form_open("#") ?>

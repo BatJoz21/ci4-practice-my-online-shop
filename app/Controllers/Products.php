@@ -22,14 +22,15 @@ class Products extends BaseController
             $categories = $response["data"];
         }
 
-        $response = $this->api->getProducts();
+        $response = $this->api->getStockedProducts();
         if($response["success"]) {
             $products = $response["data"];
 
             return view("Products/index", ["products" => $products, "categories" => $categories]);
         }
 
-        return view("Products/index"); // ToDo: make a custom error page
+        return redirect()->to("")
+                         ->with("error", $response["message"]);
     }
 
     public function getProductImage(int $id)

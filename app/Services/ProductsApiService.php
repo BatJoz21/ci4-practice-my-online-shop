@@ -47,16 +47,6 @@ class ProductsApiService extends BaseApiService {
         });
     }
 
-    public function createProductVariant(int $id, array $data)
-    {
-        return $this->handleRequest(function() use($id, $data) {
-            return $this->client->post("products/" . $id . "/variants", [
-                "headers"       => $this->getHeaders(),
-                "json"          => $data
-            ]);
-        });
-    }
-
     public function getAllCategory()
     {
         return $this->handleRequest(function() {
@@ -65,6 +55,15 @@ class ProductsApiService extends BaseApiService {
     }
 
     public function getProducts()
+    {
+        return $this->handleRequest(function() {
+            return $this->client->get("products/all", [
+                "headers"       => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function getStockedProducts()
     {
         return $this->handleRequest(function() {
             return $this->client->get("products", []);
@@ -77,6 +76,15 @@ class ProductsApiService extends BaseApiService {
     }
 
     public function getProduct(int $id)
+    {
+        return $this->handleRequest(function() use($id) {
+            return $this->client->get("products/all/" . $id, [
+                "headers"       => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function getStockedProduct(int $id)
     {
         return $this->handleRequest(function() use($id) {
             return $this->client->get("products/" . $id, [
@@ -94,30 +102,47 @@ class ProductsApiService extends BaseApiService {
         });
     }
 
-    public function getSingleVariant(int $id, int $variant_id)
+    public function updateProducts(
+        int $id,
+        array $data,
+        ?\CodeIgniter\HTTP\Files\UploadedFile $image = null
+    )
     {
-        return $this->handleRequest(function() use($id, $variant_id) {
-            return $this->client->get("products/" . $id . "/variants/" . $variant_id, [
-                "headers"       => $this->getHeaders()
-            ]);
-        });
-    }
+        $multipart = [
+            [
+                "name"      => "category_id",
+                "contents"  => $data["category_id"]
+            ],
+            [
+                "name"      => "name",
+                "contents"  => $data["name"]
+            ],
+            [
+                "name"      => "slug",
+                "contents"  => $data["slug"]
+            ],
+            [
+                "name"      => "description",
+                "contents"  => $data["description"]
+            ],
+            [
+                "name"      => "price",
+                "contents"  => $data["price"]
+            ]
+        ];
 
-    public function updateProductVariant(int $id, int $variant_id, array $data)
-    {
-        return $this->handleRequest(function() use($id, $variant_id, $data) {
-            return $this->client->put("products/" . $id . "/variants/" . $variant_id, [
+        if($image && $image->isValid()) {
+            $multipart[] = [
+                "name"      => "image",
+                "contents"  => fopen($image->getTempName(), "r"),
+                "filename"  => $image->getClientName()
+            ];
+        }
+
+        return $this->handleRequest(function() use($id, $multipart) {
+            return $this->client->put("products/" . $id, [
                 "headers"       => $this->getHeaders(),
-                "json"          => $data
-            ]);
-        });
-    }
-
-    public function deleteProductVariant(int $id, int $variant_id)
-    {
-        return $this->handleRequest(function() use($id, $variant_id) {
-            return $this->client->delete("products/" . $id . "/variants/" . $variant_id, [
-                "headers"       => $this->getHeaders()
+                "multipart"     => $multipart
             ]);
         });
     }

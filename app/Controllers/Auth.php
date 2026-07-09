@@ -21,6 +21,14 @@ class Auth extends BaseController
 
     public function register()
     {
+        // Validate input
+        $rules = config("Validation")->newUser;
+        if(!$this->validate($rules)) {
+            return redirect()->to("register")
+                             ->with("errors", $this->validator->getErrors())
+                             ->withInput();
+        }
+
         $newUser = [
             "name"      => $this->request->getPost("name"),
             "email"     => $this->request->getPost("email"),

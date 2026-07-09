@@ -27,6 +27,8 @@ $routes->group('', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'me
     $routes->post('products', 'Products::create');
     $routes->get('my-products', 'Products::index');
     $routes->get('my-products/(:num)', 'Products::show/$1');
+    $routes->get('my-products/(:num)/edit', 'Products::edit/$1');
+    $routes->patch('my-products/(:num)', 'Products::update/$1');
     $routes->post('my-products/(:num)/variants', 'ProductVariants::create/$1');
     $routes->get('my-products/(:num)/variants/(:num)/edit', 'ProductVariants::edit/$1/$2');
     $routes->patch('my-products/(:num)/variants/(:num)', 'ProductVariants::update/$1/$2');

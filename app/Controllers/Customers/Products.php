@@ -16,7 +16,7 @@ class Products extends BaseController
 
     public function show(int $id)
     {
-        $response = $this->api->getProduct($id);
+        $response = $this->api->getStockedProduct($id);
 
         if($response["success"]) {
             $varianResponse = $this->api->getVariantsOfAProduct($id);
@@ -27,6 +27,7 @@ class Products extends BaseController
             ]);
         }
 
-        return view("Products/index"); // ToDo: make a custom error page 
+        return redirect()->to("")
+                         ->with("error", "Product not found");
     }
 }

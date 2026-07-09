@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Validation\CustomRules;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -25,6 +26,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        CustomRules::class,
     ];
 
     /**
@@ -41,6 +43,39 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public $newUser = [
+        'name' => [
+            'label'     => 'Name',
+            'rules'     => [
+                'required',
+                'max_length[100]',
+            ],
+        ],
+        'email' => [
+            'label'     => 'Email',
+            'rules'     => [
+                'required',
+                'max_length[150]',
+                'valid_email',
+            ],
+        ],
+        'password' => [
+            'label'     => 'Password',
+            'rules'     => [
+                'required',
+                'max_length[20]',
+                'strong_password',
+            ],
+            'errors' => [
+                'strong_password' => 'Password must be at least 8 characters and include an uppercase letter, lowercase letter, number, and symbol.',
+            ],
+        ],
+        'confirm_password' => [
+            'label'     => 'Confirm Password',
+            'rules'     => 'required|matches[password]',
+        ],
+    ];
+
     public $productRule = [
         'name'          => 'required|max_length[180]',
         'category_id'   => 'required',

@@ -14,6 +14,11 @@
             </div>
 
             <div class="mb-3">
+                <label for="slug" class="form-label">Product Slug</label>
+                <input type="text" name="slug" id="slug" class="form-control" value="<?= old("slug") ?>" required>
+            </div>
+
+            <div class="mb-3">
                 <label for="category_id" class="form-label">Category</label>
                 <select name="category_id" id="category_id" class="form-select" required>
                     <option value="" disabled selected>Select a category</option>
@@ -35,11 +40,6 @@
                     <label for="price" class="form-label">Price (Rp)</label>
                     <input type="number" name="price" id="price" class="form-control" 
                         value="<?= old("price") ?>" min="1000" step="1000" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" id="stock"class="form-control"
-                        value="<?= old('stock', 0) ?>" min="0" required>
                 </div>
             </div>
 

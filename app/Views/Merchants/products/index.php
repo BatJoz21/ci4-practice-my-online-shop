@@ -43,7 +43,7 @@
                                 <span class="badge bg-secondary"><?= esc($product["category_name"]) ?></span>
                             </td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-outline-info">Show</a>
+                                <a href="<?= base_url("my-products/" . $product["id"]) ?>" class="btn btn-sm btn-outline-info">Show</a>
                             </td>
                             <td class="text-center">
                                 <a href="#" class="btn btn-sm btn-outline-primary">Edit</a>

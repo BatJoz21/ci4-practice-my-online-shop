@@ -23,8 +23,9 @@
             <div class="col-md-3 mb-4">
                 <h6>Stay Updated</h6>
                 <div class="d-flex gap-3">
-                    <a class="text-light" href="#">FB</a>
-                    <a class="text-light" href="#">IG</a>
+                    <a href="#" class="text-dark fs-5"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-dark fs-5"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-dark fs-5"><i class="bi bi-twitter-x"></i></a>
                 </div>
             </div>
         </div>

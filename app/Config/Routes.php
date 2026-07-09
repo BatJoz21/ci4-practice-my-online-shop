@@ -23,6 +23,12 @@ $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'jw
 
 // Merchant routes
 $routes->group('', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'merchant'], function($routes) {
-    $routes->get('my-products', 'Products::index');
     $routes->get('products/new', 'Products::new');
+    $routes->post('products', 'Products::create');
+    $routes->get('my-products', 'Products::index');
+    $routes->get('my-products/(:num)', 'Products::show/$1');
+    $routes->post('my-products/(:num)/variants', 'ProductVariants::create/$1');
+    $routes->get('my-products/(:num)/variants/(:num)/edit', 'ProductVariants::edit/$1/$2');
+    $routes->patch('my-products/(:num)/variants/(:num)', 'ProductVariants::update/$1/$2');
+    $routes->delete('my-products/(:num)/variants/(:num)', 'ProductVariants::delete/$1/$2');
 });

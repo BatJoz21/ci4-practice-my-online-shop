@@ -41,4 +41,10 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public $productRule = [
+        'name'          => 'required|max_length[180]',
+        'category_id'   => 'required',
+        'description'   => 'required',
+        'price'         => 'required',
+    ];
 }

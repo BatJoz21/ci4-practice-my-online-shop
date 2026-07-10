@@ -6,8 +6,7 @@
 
     <!-- Filter Bar -->
     <div class="bg-light border rounded-3 p-3 mb-4">
-        <?= form_open("products") ?>
-            <input type="hidden" name="_method" value="GET">
+        <?= form_open("products", ["method" => "get"]) ?>
             <div class="row g-2 align-items-center">
                 <div class="col-md-7">
                     <input type="text" name="search" class="form-control" placeholder="Search product..." value="<?= esc($search ?? "") ?>">
@@ -18,7 +17,10 @@
                         <option value="">All Categories</option>
                         <?php if(!empty($categories)): ?>
                             <?php foreach($categories as $category): ?>
-                                <option value="<?= $category["id"] ?>"><?= esc($category["name"]) ?></option>
+                                <option value="<?= $category["id"] ?>" 
+                                    <?= (!empty($category_id) && $category_id == $category["id"]) ? "selected" : "" ?>>
+                                    <?= esc($category["name"]) ?>
+                                </option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>

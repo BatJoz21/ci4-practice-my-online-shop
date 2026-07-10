@@ -63,10 +63,24 @@ class ProductsApiService extends BaseApiService {
         });
     }
 
-    public function getStockedProducts()
+    public function getStockedProducts(string $search, string $category)
     {
-        return $this->handleRequest(function() {
-            return $this->client->get("products", []);
+        $uri = "products";
+
+        if(!empty($category)) {
+            $uri = $uri . "?category_id=" . $category;
+
+            if(!empty($search)) {
+                $uri = $uri . "&search=" . $search;
+            }
+        } else {
+            if(!empty($search)) {
+                $uri = $uri . "?search=" . $search;
+            }
+        }
+
+        return $this->handleRequest(function() use($uri) {
+            return $this->client->get($uri, []);
         });
     }
 

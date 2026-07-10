@@ -21,7 +21,7 @@ class Carts extends BaseController
         $quantity = (int)$this->request->getPost("quantity");
         $variantId = (int)$this->request->getPost("variant_id");
 
-        $price = $this->sumItemPricePerQuantity($this->products->getProductPrice($variantId)[0]["price_snapshot"], $quantity);
+        $price = $this->products->getProductPrice($variantId)[0]["price_snapshot"];
 
         $response = $this->api->addItemToCart([
             "product_id"        => (int)$this->request->getPost("product_id"),
@@ -55,7 +55,7 @@ class Carts extends BaseController
         $variantID = (int)$this->request->getPost("variant_id");
         $quantity = (int)$this->request->getPost("quantity");
 
-        $newPrice = $this->sumItemPricePerQuantity($this->products->getProductPrice($variantID)[0]["price_snapshot"], $quantity);
+        $newPrice = $this->products->getProductPrice($variantID)[0]["price_snapshot"];
 
         $response = $this->api->updateItemOnCart($id, [
             "variant_id"        => $variantID,
@@ -83,12 +83,5 @@ class Carts extends BaseController
 
         return redirect()->to("cart")
                          ->with("message", $response["data"]["message"]);
-    }
-
-    private function sumItemPricePerQuantity(string $price, string $quantity): string
-    {
-        $price = sprintf('%.2F', (floatval($price) * floatval($quantity)));
-
-        return $price;
     }
 }

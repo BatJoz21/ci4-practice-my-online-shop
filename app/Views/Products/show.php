@@ -23,7 +23,7 @@
 
             <p class="text-muted"><?= esc($product["description"]) ?></p>
 
-            <?= form_open("#") ?>
+            <?= form_open("products/addToCart") ?>
                 <input type="hidden" name="product_id" value="<?= esc($product["id"]) ?>">
 
                 <?php if(!empty($variants)): ?>

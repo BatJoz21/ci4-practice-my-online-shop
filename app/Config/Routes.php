@@ -17,8 +17,12 @@ $routes->get('products', 'Products::index');
 $routes->get('products/(:num)/image', 'Products::getProductImage/$1');
 
 // Customer routes
-$routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'jwtauth'], function($routes) {
+$routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'customer'], function($routes) {
     $routes->get('products/(:num)', 'Products::show/$1');
+    $routes->post('products/addToCart', 'Carts::addItem');
+    $routes->get('cart', 'Carts::show');
+    $routes->patch('cart/(:num)', 'Carts::update/$1');
+    $routes->delete('cart/(:num)', 'Carts::delete/$1');
 });
 
 // Merchant routes

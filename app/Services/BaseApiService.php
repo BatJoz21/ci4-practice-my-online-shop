@@ -16,6 +16,15 @@ class BaseApiService
         ]);
     }
 
+    public function getTotalItemsInCart()
+    {
+        return $this->handleRequest(function() {
+            return $this->client->get("cart/total", [
+                "headers"   => $this->getHeaders()
+            ]);
+        });
+    }
+
     protected function getHeaders()
     {
         return [

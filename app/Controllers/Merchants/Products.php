@@ -22,7 +22,7 @@ class Products extends BaseController
                              ->with("error", "Categories not found");
         }
 
-        return view("Merchants/products/create", ["categories" => $response["data"]]);
+        return view("Products/merchants/create", ["categories" => $response["data"]]);
     }
 
     public function create()
@@ -67,10 +67,11 @@ class Products extends BaseController
         $response = $this->api->getProducts();
 
         if($response["success"]) {
-            return view("Merchants/products/index", ["products" => $response["data"]]);
+            return view("Products/merchants/index", ["products" => $response["data"]]);
         }
 
-        return view("Products/index"); // ToDo: make a custom error page
+        return redirect()->to("")
+                         ->with("error", "Failed to fetch data");
     }
 
     public function show(int $id)
@@ -87,7 +88,7 @@ class Products extends BaseController
                              ->with("errors", [$response2["message"]]);
         }
 
-        return view("Merchants/variants/show", [
+        return view("Variants/show", [
             "product"   => $response["data"],
             "variants"  => $response2["data"]
         ]);
@@ -107,7 +108,7 @@ class Products extends BaseController
                              ->with("error", "Categories not found");
         }
 
-        return view("Merchants/products/edit", [
+        return view("Products/merchants/edit", [
             "product"       => $response["data"],
             "categories"    => $response2["data"]
         ]);

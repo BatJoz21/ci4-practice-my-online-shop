@@ -50,7 +50,7 @@ class ProductVariants extends BaseController
                              ->with("errors", [$variantResponse["message"]]);
         }
 
-        return view("Merchants/variants/edit", [
+        return view("Variants/edit", [
             "id"        => $productResponse["data"]["id"],
             "variant"   => $variantResponse["data"]
         ]);

@@ -16,12 +16,17 @@
                 </li>
                 <?php if(session()->get('logged_in')): ?>
                     <?php if(session('user')['role'] === 'customer'): ?>
-                        <li class="nav-item">
+                        <li class="nav-item me-2">
                             <a class="nav-link position-relative text-light" href="<?= base_url("cart") ?>">
                                 My Cart
                                 <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle-x">
-                                    0
+                                    <?= session("totalInCart") ?>
                                 </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("orders") ?>">
+                                My Orders
                             </a>
                         </li>
                     <?php elseif(session('user')['role'] === 'merchant' || session('user')['role'] === 'admin'): ?>

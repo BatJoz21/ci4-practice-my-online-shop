@@ -3,6 +3,9 @@
 <?= $this->section("title") ?>Your Cart<?= $this->endSection() ?>
 
 <?= $this->section("main") ?>
+<?php 
+    $cartTotal = 0;
+?>
 
     <h3 class="mb-4">My Cart</h3>
     <?php $cartTotal = 0; ?>
@@ -52,6 +55,7 @@
                             </div>
                         </div>
                     </div>
+                    <?php $cartTotal = $cartTotal + $item["price_snapshot"] ?>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -75,7 +79,7 @@
                         <span>Rp<?= number_format($cartTotal, 0, ',', '.') ?></span>
                     </div>
 
-                    <a href="#" class="btn btn-primary w-100">
+                    <a href="<?= base_url("cart/checkout") ?>" class="btn btn-primary w-100">
                         Proceed to Checkout
                     </a>
                 </div>

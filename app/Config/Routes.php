@@ -20,9 +20,15 @@ $routes->get('products/(:num)/image', 'Products::getProductImage/$1');
 $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'customer'], function($routes) {
     $routes->get('products/(:num)', 'Products::show/$1');
     $routes->post('products/addToCart', 'Carts::addItem');
+
     $routes->get('cart', 'Carts::show');
+    $routes->get('cart/checkout', 'Carts::showCheckOut');
     $routes->patch('cart/(:num)', 'Carts::update/$1');
     $routes->delete('cart/(:num)', 'Carts::delete/$1');
+
+    $routes->get('orders', 'Orders::index');
+    $routes->get('orders/(:num)', 'Orders::show/$1');
+    $routes->post('orders', 'Orders::create');
 });
 
 // Merchant routes

@@ -16,6 +16,10 @@ class Auth extends BaseController
 
     public function registerPage()
     {
+        if(session("logged_in")) {
+            return redirect()->to("");
+        }
+
         return view("Auth/register");
     }
 
@@ -49,6 +53,10 @@ class Auth extends BaseController
 
     public function loginPage()
     {
+        if(session("logged_in")) {
+            return redirect()->to("");
+        }
+        
         return view("Auth/login");
     }
 

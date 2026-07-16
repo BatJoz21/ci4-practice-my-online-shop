@@ -15,13 +15,16 @@ class Home extends BaseController
 
     public function index(): string
     {
-        // Set total item in cart for header
-        $responseTotal = $this->api->getTotalItemsInCart();
-        $totalInCart = session("totalInCart") ?? 0;
-        if($responseTotal["success"]) {
-            $totalInCart = $responseTotal["data"];
+        if(session("logged_in"))
+        {
+            // Set total item in cart for header
+            $responseTotal = $this->api->getTotalItemsInCart();
+            $totalInCart = session("totalInCart") ?? 0;
+            if($responseTotal["success"]) {
+                $totalInCart = $responseTotal["data"];
+            }
+            session()->set("totalInCart", $totalInCart);
         }
-        session()->set("totalInCart", $totalInCart);
 
         return view('Home/index');
     }

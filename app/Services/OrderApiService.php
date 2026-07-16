@@ -33,10 +33,38 @@ class OrderApiService extends BaseApiService
         });
     }
 
-    public function getOrders()
+    public function getOrdersForMerchant(string $status)
     {
-        return $this->handleRequest(function() {
-            return $this->client->get("orders", [
+        $uri = "merchant/orders";
+        if(!empty($status) && $status != "" && $status != "all") {
+            $uri = $uri . "?status=" . $status;
+        }
+
+        return $this->handleRequest(function() use($uri) {
+            return $this->client->get($uri, [
+                "headers"       => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function getOrders(string $status)
+    {
+        $uri = "orders";
+        if(!empty($status) && $status != "" && $status != "all") {
+            $uri = $uri . "?status=" . $status;
+        }
+
+        return $this->handleRequest(function() use($uri) {
+            return $this->client->get($uri, [
+                "headers"       => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function getOrderDetailForMerchant(int $orderID)
+    {
+        return $this->handleRequest(function() use($orderID) {
+            return $this->client->get("merchant/orders/" . $orderID, [
                 "headers"       => $this->getHeaders()
             ]);
         });
@@ -47,6 +75,37 @@ class OrderApiService extends BaseApiService
         return $this->handleRequest(function() use($orderID) {
             return $this->client->get("orders/" . $orderID, [
                 "headers"       => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function getOrderItems(int $orderID)
+    {
+        return $this->handleRequest(function() use($orderID) {
+            return $this->client->get("orders/" . $orderID . "/items", [
+                "headers"       => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function updateOrder(array $data, int $orderID)
+    {
+        return $this->handleRequest(function() use($data, $orderID) {
+            return $this->client->put("merchant/orders/" . $orderID, [
+                "headers"       => $this->getHeaders(),
+                "json"          => $data
+            ]);
+        });
+    }
+
+    public function changeStatusOrder(int $orderID, string $status)
+    {
+        return $this->handleRequest(function() use($orderID, $status) {
+            return $this->client->put("orders/" . $orderID . "/complete" , [
+                "headers"       => $this->getHeaders(),
+                "json"          => [
+                    "status"    => $status
+                ]
             ]);
         });
     }

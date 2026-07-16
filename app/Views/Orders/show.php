@@ -67,6 +67,14 @@
                                         <p class="text-muted small mb-0">
                                             <?= $item["quantity"] ?> &times; Rp<?= number_format($item["price_snapshot"], 0, ',', '.') ?>
                                         </p>
+
+                                        <?php if($order["status"] === "completed"): ?>
+                                            <?php $queryString = http_build_query(["order_id" => $order["id"]]); ?>
+                                            <a href="<?= base_url("products/" . $item["product_id"] . "/reviews?" . $queryString) ?>" 
+                                                class="btn btn-sm btn-outline-primary mt-2">
+                                                Leave a Review
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="fw-bold">
                                         Rp<?= number_format($item["subtotal"], 0, ',', '.') ?>
@@ -120,12 +128,29 @@
 
                                 <?= form_open("orders/" . $order["id"] . "/cancel") ?>
                                     <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="PATCH">
+                                    
                                     <button
                                         type="submit"
                                         class="btn btn-outline-danger w-50"
                                         onclick="return confirm('Cancel this order?');"
                                     >
                                         Cancel Order
+                                    </button>
+                                <?= form_close() ?>
+                            </div>
+                        <?php elseif($order["status"] === "shipped"): ?>
+                            <div class="text-center">
+                                <?= form_open("orders/" . $order["id"] . "/complete") ?>
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="PATCH">
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success w-50 mb-2"
+                                        onclick="return confirm('Complete this order?\nMake sure you have received the packages');"
+                                    >
+                                        Complete order
                                     </button>
                                 <?= form_close() ?>
                             </div>

@@ -15,10 +15,10 @@ $routes->get('session-test', function () {
 
 $routes->get('products', 'Products::index');
 $routes->get('products/(:num)/image', 'Products::getProductImage/$1');
+$routes->get('products/(:num)', '\App\Controllers\Customers\Products::show/$1');
 
 // Customer routes
 $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'customer'], function($routes) {
-    $routes->get('products/(:num)', 'Products::show/$1');
     $routes->post('products/addToCart', 'Carts::addItem');
 
     $routes->get('cart', 'Carts::show');
@@ -28,7 +28,12 @@ $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'cu
 
     $routes->get('orders', 'Orders::index');
     $routes->get('orders/(:num)', 'Orders::show/$1');
+    $routes->patch('orders/(:num)/cancel', 'Orders::cancelOrder/$1');
+    $routes->patch('orders/(:num)/complete', 'Orders::completeStatus/$1');
     $routes->post('orders', 'Orders::create');
+
+    $routes->get('products/(:num)/reviews', 'Reviews::new/$1');
+    $routes->post('products/(:num)/reviews', 'Reviews::create/$1');
 });
 
 // Merchant routes
@@ -43,4 +48,8 @@ $routes->group('', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'me
     $routes->get('my-products/(:num)/variants/(:num)/edit', 'ProductVariants::edit/$1/$2');
     $routes->patch('my-products/(:num)/variants/(:num)', 'ProductVariants::update/$1/$2');
     $routes->delete('my-products/(:num)/variants/(:num)', 'ProductVariants::delete/$1/$2');
+
+    $routes->get('merchant/orders', 'Orders::index');
+    $routes->get('merchant/orders/(:num)', 'Orders::show/$1');
+    $routes->patch('merchant/orders/(:num)', 'Orders::update/$1');
 });

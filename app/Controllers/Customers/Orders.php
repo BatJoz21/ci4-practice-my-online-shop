@@ -45,7 +45,7 @@ class Orders extends BaseController
 
             if(!$response2["success"]) {
                 // Empty user's order_items &  delete user's order
-                if(!$this->resetOrder($insertedItem, $response["data"]["id"])) {
+                if(!$this->emptyOrder($insertedItem, $response["data"]["id"])) {
                     return redirect()->back()
                                      ->with("error", "Failed to reset order");
                 }
@@ -58,7 +58,7 @@ class Orders extends BaseController
             $isRemoveFromCart = $this->carts->deleteAfterCreateOrder($item["id"]);
             if(!$isRemoveFromCart) {
                 // Empty user's order_items &  delete user's order
-                if(!$this->resetOrder($insertedItem, $response["data"]["id"])) {
+                if(!$this->emptyOrder($insertedItem, $response["data"]["id"])) {
                     return redirect()->back()
                                      ->with("error", "Failed to reset order");
                 }
@@ -68,7 +68,7 @@ class Orders extends BaseController
         $response3 = $this->api->populateNewOrder($response["data"]["id"]);
         if(!$response3["success"]) {
             // Empty user's order_items &  delete user's order
-            if(!$this->resetOrder($insertedItem, $response["data"]["id"])) {
+            if(!$this->emptyOrder($insertedItem, $response["data"]["id"])) {
                 return redirect()->back()
                                     ->with("error", "Failed to reset order");
             }
@@ -77,19 +77,35 @@ class Orders extends BaseController
                              ->withInput();
         }
 
+        // Set total item in cart for header
+        $responseTotal = $this->api->getTotalItemsInCart();
+        $totalInCart = session("totalInCart") ?? 0;
+        if($responseTotal["success"]) {
+            $totalInCart = $responseTotal["data"];
+        }
+        session()->set("totalInCart", $totalInCart);
+
         return redirect()->to("orders/" . $response["data"]["id"])
                          ->with("message", $response3["data"]["message"]);
     }
 
     public function index()
     {
-        $response = $this->api->getOrders();
+        $status = "all";
+        if(!empty($this->request->getGet("status"))) {
+            $status = $this->request->getGet("status");
+        }
+
+        $response = $this->api->getOrders($status);
         if(!$response["success"]) {
             return redirect()->to("")
                              ->with("error", $response["message"]);
         }
 
-        return view("Orders/index", ["orders" => $response["data"]]);
+        return view("Orders/index", [
+            "orders"            => $response["data"],
+            "currentStatus"     => $status
+        ]);
     }
 
     public function show(int $orderID)
@@ -106,7 +122,48 @@ class Orders extends BaseController
         ]);
     }
 
-    private function resetOrder(array $items, int $id)
+    public function completeStatus(int $orderID)
+    {
+        $response = $this->api->changeStatusOrder($orderID, "completed");
+        if(!$response["success"]) {
+            return redirect()->back()
+                             ->with("message", $response["message"]);
+        }
+
+        return redirect()->to("orders")
+                         ->with("message", "Order completed");
+    }
+
+    public function cancelOrder(int $orderID)
+    {
+        $responseItems = $this->api->getOrderItems($orderID);
+        if(!$responseItems["success"]) {
+            return redirect()->back()
+                             ->with("message", $responseItems["message"]);
+        }
+        
+        $items = $responseItems["data"];
+        if(!empty($items)) {
+            foreach($items as $item) {
+                $response = $this->api->deleteOrderItem($item["order_id"], $item["id"]);
+                if(!$response["success"]) {
+                    return redirect()->back()
+                                     ->with("message", $response["message"]);
+                }
+            }
+        } 
+
+        $response = $this->api->changeStatusOrder($orderID, "cancelled");
+        if(!$response["success"]) {
+            return redirect()->back()
+                             ->with("message", $response["message"]);
+        }
+
+        return redirect()->to("orders")
+                         ->with("message", "Order cancelled");
+    }
+
+    private function emptyOrder(array $items, int $id)
     {
         if(!empty($items)) {
             foreach($items as $item) {

@@ -30,3 +30,24 @@ footer {
   flex-wrap: wrap;
 }
 .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.9); }
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.star-rating input {
+  display: none;
+}
+.star-rating label {
+  font-size: 2rem;
+  color: #dee2e6;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: #ffc107;
+}

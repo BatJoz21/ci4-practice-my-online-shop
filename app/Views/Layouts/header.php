@@ -33,6 +33,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-light text-nowrap" href="<?= base_url("my-products") ?>">My Products</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("merchant/orders") ?>">
+                                All Orders
+                            </a>
+                        </li>
                     <?php endif; ?>
                 <?php endif; ?>
             </ul>

@@ -47,4 +47,12 @@ class Products extends BaseController
 
         return $data;
     }
+
+    public function getProductForReview(int $id)
+    {
+        $data = $this->model->select("id, name, image")
+                            ->find($id);
+
+        return $data;
+    }
 }

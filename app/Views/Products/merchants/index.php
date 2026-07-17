@@ -6,7 +6,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="mb-0">My Products</h3>
-        <a href="<?= base_url("products/new") ?>" class="btn btn-primary">+ Create New Product</a>
+        <a href="<?= base_url("merchant/products/new") ?>" class="btn btn-primary">+ Create New Product</a>
     </div>
 
     <!-- Search bar -->
@@ -43,7 +43,7 @@
                                 <span class="badge bg-secondary"><?= esc($product["category_name"]) ?></span>
                             </td>
                             <td class="text-center">
-                                <a href="<?= base_url("my-products/" . $product["id"]) ?>" class="btn btn-sm btn-outline-info">Show</a>
+                                <a href="<?= base_url("merchant/products/" . $product["id"]) ?>" class="btn btn-sm btn-outline-info">Show</a>
                             </td>
                             <td class="text-center">
                                 <a href="<?= base_url("merchant/products/" . $product["id"] . "/edit") ?>" class="btn btn-sm btn-outline-primary">Edit</a>

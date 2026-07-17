@@ -15,7 +15,7 @@ class Home extends BaseController
 
     public function index(): string
     {
-        if(session("logged_in"))
+        if(session("logged_in") && session("user")["role"] === "customer")
         {
             // Set total item in cart for header
             $responseTotal = $this->api->getTotalItemsInCart();

@@ -3,18 +3,20 @@
 namespace App\Controllers\Customers;
 
 use App\Controllers\BaseController;
-use App\Services\ProductsApiService;
+use App\Models\ReviewModel;
 use App\Services\ReviewApiService;
 
 class Reviews extends BaseController
 {
     protected ReviewApiService $api;
-    protected ProductsApiService $productApi;
+    protected ReviewModel $model;
+    protected Products $products;
 
     public function __construct()
     {
         $this->api = new ReviewApiService();
-        $this->productApi = new ProductsApiService();
+        $this->model = new ReviewModel();
+        $this->products = new Products();
     }
 
     public function new(int $productID)
@@ -25,18 +27,15 @@ class Reviews extends BaseController
                              ->with("error", "Order's id invalid");
         }
 
-        $response = $this->productApi->getStockedProduct($productID);
-        if(!$response["success"]) {
-            return redirect()->to("orders")
-                             ->with("error", $response["message"]);
-        }
-        if(empty($response["data"])) {
-            return redirect()->to("orders")
-                             ->with("error", "Product not exist");
+        if(!$this->isAvailableToReview($productID, $orderID)) {
+            return redirect()->to("orders/" . $orderID)
+                             ->with("error", "Product has been reviewed");
         }
 
+        $data = $this->products->getProductForReview($productID);
+
         return view("Reviews/customer/create", [
-            "product"   => $response["data"],
+            "product"   => $data,
             "orderID"   => $orderID
         ]);
     }
@@ -55,5 +54,18 @@ class Reviews extends BaseController
 
         return redirect()->to("orders")
                          ->with("message", $response["data"]["message"]);
+    }
+
+    private function isAvailableToReview(int $productID, int $orderID):bool
+    {
+        $data = $this->model->select("id")
+                            ->where("product_id", $productID)
+                            ->where("order_id", $orderID)
+                            ->find();
+        if(!empty($data)) {
+            return false;
+        }
+
+        return true;
     }
 }

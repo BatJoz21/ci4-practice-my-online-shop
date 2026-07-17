@@ -28,8 +28,10 @@ class MerchantFilter implements FilterInterface
         $role = session("user")["role"] ?? "";
 
         if($role != "merchant") {
-            return redirect()->to("/")
-                             ->with("error", "Access denied!");
+            if($role != "superadmin") {
+                return redirect()->to("/")
+                                ->with("error", "Access denied!");
+            }
         }
     }
 

@@ -7,7 +7,7 @@
     <h3 class="mb-4">Create New Product</h3>
 
     <div class="border rounded-3 shadow-sm p-4" style="max-width: 700px;">
-        <?= form_open_multipart("products") ?>
+        <?= form_open_multipart("merchant/products") ?>
             <div class="mb-3">
                 <label for="name" class="form-label">Product Name</label>
                 <input type="text" name="name" id="name" class="form-control" value="<?= old("name") ?>" required>
@@ -51,7 +51,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">Create Product</button>
-                <a href="<?= base_url("my-products") ?>" class="btn btn-outline-secondary">Cancel</a>
+                <a href="<?= base_url("merchant/products") ?>" class="btn btn-outline-secondary">Cancel</a>
             </div>
         <?= form_close() ?>
     </div>

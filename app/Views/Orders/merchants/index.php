@@ -75,7 +75,6 @@
     <?php else: ?>
         <div class="text-center py-5">
             <p class="text-muted fs-5">No orders found.</p>
-            <a href="<?= base_url('products') ?>" class="btn btn-primary">Start Shopping</a>
         </div>
     <?php endif; ?>
 

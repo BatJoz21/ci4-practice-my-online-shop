@@ -8,7 +8,7 @@
         <!-- Edit variant -->
         <div class="border rounded-3 shadow-sm p-4" style="max-width: 600px;">
             <h6 class="mb-3">Add Variant</h6>
-            <?= form_open("my-products/" . $id . "/variants/" . $variant["id"]) ?>
+            <?= form_open("merchant/products/" . $id . "/variants/" . $variant["id"]) ?>
                 <?= csrf_field() ?>
                 <input type="hidden" name="_method" value="PATCH">
                 

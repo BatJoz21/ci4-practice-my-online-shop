@@ -18,7 +18,7 @@ class Products extends BaseController
     {
         $response = $this->api->getAllCategory();
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Categories not found");
         }
 
@@ -58,7 +58,7 @@ class Products extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products")
+        return redirect()->to("merchant/products")
                          ->with("message", $response["data"]["message"]);
     }
 
@@ -78,13 +78,13 @@ class Products extends BaseController
     {
         $response = $this->api->getProduct($id);
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Product not found");
         }
 
         $response2 = $this->api->getVariantsOfAProduct($id);
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("errors", [$response2["message"]]);
         }
 
@@ -98,13 +98,13 @@ class Products extends BaseController
     {
         $response = $this->api->getProduct($id);
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Product not found");
         }
 
         $response2 = $this->api->getAllCategory();
         if(!$response2["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Categories not found");
         }
 
@@ -148,7 +148,19 @@ class Products extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products")
+        return redirect()->to("merchant/products")
+                         ->with("message", $response["data"]["message"]);
+    }
+
+    public function delete(int $id)
+    {
+        $response = $this->api->deleteProduct($id);
+        if(!$response["success"]) {
+            return redirect()->back()
+                             ->with("errors", [$response["message"]]);
+        }
+
+        return redirect()->to("merchant/products")
                          ->with("message", $response["data"]["message"]);
     }
 }

@@ -40,7 +40,7 @@ class ProductsApiService extends BaseApiService {
         }
 
         return $this->handleRequest(function() use($multipart) {
-            return $this->client->post("products", [
+            return $this->client->post("merchant/products", [
                 "headers"       => $this->getHeaders(),
                 "multipart"     => $multipart
             ]);
@@ -57,7 +57,7 @@ class ProductsApiService extends BaseApiService {
     public function getProducts()
     {
         return $this->handleRequest(function() {
-            return $this->client->get("products/all", [
+            return $this->client->get("merchant/products", [
                 "headers"       => $this->getHeaders()
             ]);
         });
@@ -92,7 +92,7 @@ class ProductsApiService extends BaseApiService {
     public function getProduct(int $id)
     {
         return $this->handleRequest(function() use($id) {
-            return $this->client->get("products/all/" . $id, [
+            return $this->client->get("merchant/products/" . $id, [
                 "headers"       => $this->getHeaders()
             ]);
         });
@@ -154,9 +154,18 @@ class ProductsApiService extends BaseApiService {
         }
 
         return $this->handleRequest(function() use($id, $multipart) {
-            return $this->client->put("products/" . $id, [
+            return $this->client->put("merchant/products/" . $id, [
                 "headers"       => $this->getHeaders(),
                 "multipart"     => $multipart
+            ]);
+        });
+    }
+
+    public function deleteProduct(int $id)
+    {
+        return $this->handleRequest(function() use($id) {
+            return $this->client->delete("merchant/products/" . $id . "/delete" , [
+                "headers"       => $this->getHeaders()
             ]);
         });
     }

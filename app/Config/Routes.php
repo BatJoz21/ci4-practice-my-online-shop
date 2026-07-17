@@ -32,24 +32,28 @@ $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'cu
     $routes->patch('orders/(:num)/complete', 'Orders::completeStatus/$1');
     $routes->post('orders', 'Orders::create');
 
+    $routes->post('orders/(:num)/payment', 'Payments::pay/$1');
+    $routes->get('orders/(:num)/payment/result', 'Payments::paymentResult/$1');
+
     $routes->get('products/(:num)/reviews', 'Reviews::new/$1');
     $routes->post('products/(:num)/reviews', 'Reviews::create/$1');
 });
 
 // Merchant routes
-$routes->group('', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'merchant'], function($routes) {
+$routes->group('merchant/', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'merchant'], function($routes) {
     $routes->get('products/new', 'Products::new');
     $routes->post('products', 'Products::create');
-    $routes->get('my-products', 'Products::index');
-    $routes->get('my-products/(:num)', 'Products::show/$1');
-    $routes->get('my-products/(:num)/edit', 'Products::edit/$1');
-    $routes->patch('my-products/(:num)', 'Products::update/$1');
-    $routes->post('my-products/(:num)/variants', 'ProductVariants::create/$1');
-    $routes->get('my-products/(:num)/variants/(:num)/edit', 'ProductVariants::edit/$1/$2');
-    $routes->patch('my-products/(:num)/variants/(:num)', 'ProductVariants::update/$1/$2');
-    $routes->delete('my-products/(:num)/variants/(:num)', 'ProductVariants::delete/$1/$2');
+    $routes->get('products', 'Products::index');
+    $routes->get('products/(:num)', 'Products::show/$1');
+    $routes->get('products/(:num)/edit', 'Products::edit/$1');
+    $routes->patch('products/(:num)', 'Products::update/$1');
+    $routes->delete('products/(:num)', 'Products::delete/$1');
+    $routes->post('products/(:num)/variants', 'ProductVariants::create/$1');
+    $routes->get('products/(:num)/variants/(:num)/edit', 'ProductVariants::edit/$1/$2');
+    $routes->patch('products/(:num)/variants/(:num)', 'ProductVariants::update/$1/$2');
+    $routes->delete('products/(:num)/variants/(:num)', 'ProductVariants::delete/$1/$2');
 
-    $routes->get('merchant/orders', 'Orders::index');
-    $routes->get('merchant/orders/(:num)', 'Orders::show/$1');
-    $routes->patch('merchant/orders/(:num)', 'Orders::update/$1');
+    $routes->get('orders', 'Orders::index');
+    $routes->get('orders/(:num)', 'Orders::show/$1');
+    $routes->patch('orders/(:num)', 'Orders::update/$1');
 });

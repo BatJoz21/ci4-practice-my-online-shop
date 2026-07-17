@@ -25,7 +25,7 @@ class Reviews extends BaseController
                              ->with("error", "Order's id invalid");
         }
 
-        $response = $this->productApi->getProduct($productID);
+        $response = $this->productApi->getStockedProduct($productID);
         if(!$response["success"]) {
             return redirect()->to("orders")
                              ->with("error", $response["message"]);

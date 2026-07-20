@@ -29,7 +29,12 @@
                                 My Orders
                             </a>
                         </li>
-                    <?php elseif(session('user')['role'] === 'merchant' || session('user')['role'] === 'superadmin'): ?>
+                    <?php elseif(session("user")["role"] === "merchant" || session("user")["role"] === "superadmin"): ?>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("merchant/dashboard") ?>">
+                                Dashboard
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-light text-nowrap" href="<?= base_url("merchant/products") ?>">My Products</a>
                         </li>

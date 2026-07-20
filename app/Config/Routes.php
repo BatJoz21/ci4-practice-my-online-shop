@@ -41,6 +41,8 @@ $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'cu
 
 // Merchant routes
 $routes->group('merchant/', ['namespace' => '\App\Controllers\Merchants', 'filter' => 'merchant'], function($routes) {
+    $routes->get('dashboard', 'Home::dashboard');
+
     $routes->get('products/new', 'Products::new');
     $routes->post('products', 'Products::create');
     $routes->get('products', 'Products::index');

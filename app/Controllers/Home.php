@@ -3,14 +3,15 @@
 namespace App\Controllers;
 
 use App\Services\BaseApiService;
+use App\Services\ProductsApiService;
 
 class Home extends BaseController
 {
-    protected BaseApiService $api;
+    protected ProductsApiService $api;
 
     public function __construct()
     {
-        $this->api = new BaseApiService();
+        $this->api = new ProductsApiService();
     }
 
     public function index(): string
@@ -26,6 +27,12 @@ class Home extends BaseController
             session()->set("totalInCart", $totalInCart);
         }
 
-        return view('Home/index');
+        $response = $this->api->getStockedProducts("", "");
+        $products = [];
+        if($response["success"]) {
+            $products = $response["data"];
+        }
+
+        return view("Home/index", ["products" => $products]);
     }
 }

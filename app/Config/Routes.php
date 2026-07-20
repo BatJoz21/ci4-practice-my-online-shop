@@ -57,3 +57,10 @@ $routes->group('merchant/', ['namespace' => '\App\Controllers\Merchants', 'filte
     $routes->get('orders/(:num)', 'Orders::show/$1');
     $routes->patch('orders/(:num)', 'Orders::update/$1');
 });
+
+// Super admin routes
+$routes->group('admin/', ['namespace' => '\App\Controllers\Admin', 'filter' => 'superadmin'], function($routes) {
+    $routes->get('users', 'Users::index');
+    $routes->get('users/(:num)', 'Users::show/$1');
+    $routes->patch('users/(:num)/role', 'Users::updateRole/$1');
+});

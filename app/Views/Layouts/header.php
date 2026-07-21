@@ -61,15 +61,25 @@
                 <?php endif; ?>
             </ul>
 
-            <ul class="navbar-nav ms-auto align-items-lg-center">
+            <ul class="navbar-nav ms-auto me-3 align-items-lg-center">
                 <?php if(session()->get('logged_in')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link text-light text-nowrap" href="<?= base_url("profile") ?>"><?= esc(session('user')['name']) ?></a>
-                    </li>
-                    <li class="nav-item">
-                        <?= form_open('logout') ?>
-                            <button class="nav-link text-light" type="submit">Logout</button>
-                        </form>
+                    <li class="nav-item dropdown">
+                        <a href="#" 
+                            class="nav-link dropdown-toggle text-light text-nowrap"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"><?= esc(session("user")["name"]) ?></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                            <li>
+                                <a class="dropdown-item" href="<?= base_url("profile") ?>">Profile</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <?= form_open("logout") ?>
+                                    <button class="dropdown-item" type="submit">Logout</button>
+                                <?= form_close() ?>
+                            </li>
+                        </ul>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">

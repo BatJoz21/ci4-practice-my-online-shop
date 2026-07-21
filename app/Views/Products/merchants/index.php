@@ -10,7 +10,7 @@
     </div>
 
     <!-- Search bar -->
-    <?= form_open("#") ?>
+    <?= form_open("merchant/products", ["method" => "get"]) ?>
         <div class="row g-2 mb-3">
             <div class="col-md-4">
                 <input type="text" name="search" class="form-control" placeholder="Search your products...">
@@ -59,6 +59,17 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
+        <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+                <?php for($i = 1; $i <= ($totalPages ?? 1); $i++): ?>
+                    <li class="page-item <?= ($i == ($currentPage ?? 1)) ? "active" : "" ?>">
+                        <a href="<?= base_url("merchant/products?page=" . $i) ?>" class="page-link"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
     <?php else: ?>
         <p class="text-center text-muted mt-4">You haven't added any products yet.</p>
     <?php endif; ?>

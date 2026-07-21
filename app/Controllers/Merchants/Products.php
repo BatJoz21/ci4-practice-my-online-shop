@@ -64,14 +64,23 @@ class Products extends BaseController
 
     public function index()
     {
-        $response = $this->api->getProducts();
+        $page = $this->request->getGet("page") ?? "1";
+        $search = $this->request->getGet("search") ?? "";
 
-        if($response["success"]) {
-            return view("Products/merchants/index", ["products" => $response["data"]]);
+        $response = $this->api->getProducts($page, $search);
+
+        if(!$response["success"]) {
+            return redirect()->to("")
+                             ->with("error", "Failed to fetch data");
         }
 
-        return redirect()->to("")
-                         ->with("error", "Failed to fetch data");
+        $products = $response["data"] ?? [];
+        $totalPages = ceil(count($products));
+
+        return view("Products/merchants/index", [
+            "products"      => $products,
+            "totalPages"    => $totalPages
+        ]);
     }
 
     public function show(int $id)

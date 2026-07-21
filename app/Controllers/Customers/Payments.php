@@ -3,15 +3,18 @@
 namespace App\Controllers\Customers;
 
 use App\Controllers\BaseController;
+use App\Models\PaymentModel;
 use App\Services\PaymentApiService;
 
 class Payments extends BaseController
 {
     protected PaymentApiService $api;
+    protected PaymentModel $model;
 
     public function __construct()
     {
         $this->api = new PaymentApiService();
+        $this->model = new PaymentModel();
     }
 
     public function pay(int $orderID)

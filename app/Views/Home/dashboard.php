@@ -12,7 +12,7 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Total Products</p>
-                    <h3 class="mb-0"><?= $stats["total_products"] ?></h3>
+                    <h3 class="mb-0"><?= $stats["total_products"] ?? "0" ?></h3>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Pending Orders</p>
-                    <h3 class="mb-0"><?= $stats["pending_orders"] ?></h3>
+                    <h3 class="mb-0"><?= $stats["pending_orders"] ?? "0" ?></h3>
                 </div>
             </div>
         </div>
@@ -28,16 +28,16 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Total Revenue</p>
-                    <h3 class="mb-0"><?= number_format($stats["total_revenue"], 0, ",", ".") ?></h3>
+                    <h3 class="mb-0">Rp <?= number_format($stats["total_revenue"] ?? "0", 0, ",", ".") ?></h3>
                     <p class="text-muted small mb-0">From completed orders</p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card shadow-sm h-100 <?= $stats["low_stock_count"] > 0 ? "border-warning" : "" ?>">
+            <div class="card shadow-sm h-100 <?= ($stats["low_stock_count"] ?? 0) > 0 ? "border-warning" : "" ?>">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Low Stock Item</p>
-                    <h3 class="mb-0 <?= $stats["low_stock_count"] > 0 ? "text-warning" : "" ?>"><?= $stats["low_stock_count"] ?></h3>
+                    <h3 class="mb-0 <?= ($stats["low_stock_count"] ?? 0) > 0 ? "text-warning" : "" ?>"><?= $stats["low_stock_count"] ?? "0" ?></h3>
                 </div>
             </div>
         </div>

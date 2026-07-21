@@ -11,9 +11,11 @@
                 <li class="nav-item">
                     <a class="nav-link text-light text-nowrap" href="<?= base_url('') ?>">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light text-nowrap" href="<?= base_url('products') ?>">Products</a>
-                </li>
+                <?php if(empty(session('user')) || session('user')['role'] != 'merchant'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-nowrap" href="<?= base_url('products') ?>">Products</a>
+                    </li>
+                <?php endif; ?>
                 <?php if(session()->get('logged_in')): ?>
                     <?php if(session('user')['role'] === 'customer'): ?>
                         <li class="nav-item me-2">
@@ -36,17 +38,24 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light text-nowrap" href="<?= base_url("merchant/products") ?>">My Products</a>
+                            <a class="nav-link text-light text-nowrap" href="<?= base_url("merchant/products") ?>">
+                                Our Products
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link position-relative text-light" href="<?= base_url("merchant/orders") ?>">
-                                All Orders
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("merchant/payments") ?>">
+                                Payments
                             </a>
                         </li>
                     <?php endif; ?>
                     <?php if(session('user')['role'] === 'superadmin'): ?>
                         <li class="nav-item">
-                            <a href="#" class="nav-link position-relative text-light">Users</a>
+                            <a href="<?= base_url("admin/users") ?>" class="nav-link position-relative text-light">Users</a>
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>

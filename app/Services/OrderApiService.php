@@ -33,11 +33,15 @@ class OrderApiService extends BaseApiService
         });
     }
 
-    public function getOrdersForMerchant(string $status)
+    public function getOrdersForMerchant(string $page, string $status, string $filter, string $search)
     {
-        $uri = "merchant/orders";
+        $uri = "merchant/orders?page=" . $page;
         if(!empty($status) && $status != "" && $status != "all") {
-            $uri = $uri . "?status=" . $status;
+            $uri = $uri . "&status=" . $status;
+        }
+
+        if(!empty($filter) && !empty($search)) {
+            $uri = $uri . "&filter=" . esc($filter) . "&search=" . esc($search);
         }
 
         return $this->handleRequest(function() use($uri) {
@@ -47,11 +51,11 @@ class OrderApiService extends BaseApiService
         });
     }
 
-    public function getOrders(string $status)
+    public function getOrders(string $status, string $page)
     {
-        $uri = "orders";
+        $uri = "orders?page=" . $page;
         if(!empty($status) && $status != "" && $status != "all") {
-            $uri = $uri . "?status=" . $status;
+            $uri = $uri . "&status=" . $status;
         }
 
         return $this->handleRequest(function() use($uri) {

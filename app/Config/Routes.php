@@ -17,6 +17,10 @@ $routes->get('products', 'Products::index');
 $routes->get('products/(:num)/image', 'Products::getProductImage/$1');
 $routes->get('products/(:num)', '\App\Controllers\Customers\Products::show/$1');
 
+$routes->group('', ['filter' => 'jwtauth'], function($routes) {
+    $routes->get('profile', 'Users::show');
+});
+
 // Customer routes
 $routes->group('', ['namespace' => '\App\Controllers\Customers', 'filter' => 'customer'], function($routes) {
     $routes->post('products/addToCart', 'Carts::addItem');
@@ -58,6 +62,8 @@ $routes->group('merchant/', ['namespace' => '\App\Controllers\Merchants', 'filte
     $routes->get('orders', 'Orders::index');
     $routes->get('orders/(:num)', 'Orders::show/$1');
     $routes->patch('orders/(:num)', 'Orders::update/$1');
+
+    $routes->get('payments', 'Payments::getAllPaymentHistory');
 });
 
 // Super admin routes

@@ -16,8 +16,9 @@ class Products extends BaseController
 
     public function index()
     {
-        $category_id = $this->request->getGet("category_id") ?? '';
-        $search = $this->request->getGet("search") ?? '';
+        $category_id = $this->request->getGet("category_id") ?? "";
+        $search = $this->request->getGet("search") ?? "";
+        $page = $this->request->getGet("page") ?? "1";
 
         $response = $this->api->getAllCategory();
         $categories = [];
@@ -25,20 +26,23 @@ class Products extends BaseController
             $categories = $response["data"];
         }
 
-        $response = $this->api->getStockedProducts($search, $category_id);
-        if($response["success"]) {
-            $products = $response["data"];
-
-            return view("Products/index", [
-                "products"      => $products,
-                "categories"    => $categories,
-                "category_id"   => $category_id,
-                "search"        => $search
-            ]);
+        $response = $this->api->getStockedProducts($search, $category_id, $page);
+        if(!$response["success"]) {
+            return redirect()->to("")
+                         ->with("error", $response["message"]);
         }
 
-        return redirect()->to("")
-                         ->with("error", $response["message"]);
+        $products = $response["data"] ?? [];
+
+        $totalPages = ceil(count($products) / 5);
+
+        return view("Products/index", [
+            "products"      => $products,
+            "categories"    => $categories,
+            "category_id"   => $category_id,
+            "search"        => $search,
+            "totalPages"    => $totalPages
+        ]);
     }
 
     public function getProductImage(int $id)

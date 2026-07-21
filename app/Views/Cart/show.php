@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php $cartTotal = $cartTotal + $item["price_snapshot"] ?>
+                    <?php $cartTotal = $cartTotal + ($item["price_snapshot"] * $item["quantity"]) ?>
                 <?php endforeach; ?>
             </div>
         </div>

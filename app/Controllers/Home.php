@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Services\BaseApiService;
 use App\Services\ProductsApiService;
 
 class Home extends BaseController
@@ -27,7 +26,7 @@ class Home extends BaseController
             session()->set("totalInCart", $totalInCart);
         }
 
-        $response = $this->api->getStockedProducts("", "");
+        $response = $this->api->getStockedProducts("", "", "1");
         $products = [];
         if($response["success"]) {
             $products = $response["data"];

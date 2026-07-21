@@ -16,13 +16,24 @@ class Users extends BaseController
 
     public function index()
     {
-        $response = $this->api->getAllUser();
+        $page = $this->request->getGet("page") ?? "1";
+        $search = $this->request->getGet("search") ?? "";
+        $role = $this->request->getGet("role") ?? "";
+
+        $response = $this->api->getAllUser($search, $role, $page);
         $users = [];
         if($response["success"]) {
             $users = $response["data"];
         }
 
-        return view("Users/admin/index", ["users" => $users]);
+        $totalPages = ceil(count($users) / 20);
+
+        return view("Users/admin/index", [
+            "users"         => $users,
+            "search"        => $search,
+            "selectedRole"  => $role,
+            "totalPages"    => $totalPages
+        ]);
     }
 
     public function show(int $id)

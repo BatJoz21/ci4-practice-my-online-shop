@@ -16,20 +16,29 @@ class Orders extends BaseController
 
     public function index()
     {
+        $page = $this->request->getGet("page") ?? "1";
+        $filter = $this->request->getGet("filter") ?? "";
+        $search = $this->request->getGet("search") ?? "";
+
         $status = "all";
         if(!empty($this->request->getGet("status"))) {
             $status = $this->request->getGet("status");
         }
 
-        $response = $this->api->getOrdersForMerchant($status);
+        $response = $this->api->getOrdersForMerchant($page, $status, $filter, $search);
         if(!$response["success"]) {
             return redirect()->to("")
                              ->with("error", $response["message"]);
         }
 
+        $orders = $response["data"] ?? [];
+        $totalPages = ceil(count($orders) / 10);
+
         return view("Orders/merchants/index", [
-            "orders"        => $response["data"],
-            "currentStatus" => $status
+            "orders"        => $orders,
+            "currentStatus" => $status,
+            "currentFilter" => $filter,
+            "totalPages"    => $totalPages
         ]);
     }
 

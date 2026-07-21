@@ -4,10 +4,20 @@ namespace App\Services;
 
 class UserApiService extends BaseApiService
 {
-    public function getAllUser()
+    public function getAllUser(string $search, string $role, string $page)
     {
-        return $this->handleRequest(function() {
-            return $this->client->get("admin/users", [
+        $uri = "admin/users?page=" . $page;
+
+        if(!empty($search)) {
+            $uri = $uri . "&search=" . $search;
+        }
+
+        if(!empty($role)) {
+            $uri = $uri . "&role=" . $role;
+        }
+
+        return $this->handleRequest(function() use($uri) {
+            return $this->client->get($uri, [
                 "headers"   => $this->getHeaders()
             ]);
         });
@@ -18,6 +28,15 @@ class UserApiService extends BaseApiService
         return $this->handleRequest(function() use($id) {
             return $this->client->get("admin/users/" . $id, [
                 "headers"   => $this->getHeaders()
+            ]);
+        });
+    }
+
+    public function getProfileData(int $id)
+    {
+        return $this->handleRequest(function() use($id) {
+            return $this->client->get("profile/" . $id, [
+                "headers"       => $this->getHeaders()
             ]);
         });
     }

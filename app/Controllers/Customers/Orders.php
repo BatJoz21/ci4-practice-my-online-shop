@@ -91,20 +91,27 @@ class Orders extends BaseController
 
     public function index()
     {
+        $page = $this->request->getGet("page") ?? "1";
+
         $status = "all";
         if(!empty($this->request->getGet("status"))) {
             $status = $this->request->getGet("status");
         }
 
-        $response = $this->api->getOrders($status);
+        $response = $this->api->getOrders($status, $page);
         if(!$response["success"]) {
             return redirect()->to("")
                              ->with("error", $response["message"]);
         }
 
+        $orders = $response["data"] ?? [];
+
+        $totalPages = ceil(count($orders) / 10);
+
         return view("Orders/index", [
-            "orders"            => $response["data"],
-            "currentStatus"     => $status
+            "orders"            => $orders,
+            "currentStatus"     => $status,
+            "totalPages"        => $totalPages
         ]);
     }
 

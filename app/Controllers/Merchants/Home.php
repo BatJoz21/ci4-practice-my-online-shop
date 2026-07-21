@@ -17,28 +17,16 @@ class Home extends BaseController
     public function dashboard()
     {
         $responseStats = $this->api->getDashboardStats();
-        if(!$responseStats["success"]) {
-            return redirect()->to("");
-        }
-        $stats = $responseStats["data"];
+        $stats = $responseStats["data"] ?? [];
 
         $responseOrders = $this->api->getRecentOrders();
-        if(!$responseOrders["success"]) {
-            return redirect()->to("");
-        }
-        $recentOrders = $responseOrders["data"];
+        $recentOrders = $responseOrders["data"] ?? [];
 
         $responseStock = $this->api->getLowStockedProducts();
-        if(!$responseStock["success"]) {
-            return redirect()->to("");
-        }
-        $lowStocked = $responseStock["data"];
+        $lowStocked = $responseStock["data"] ?? [];
 
         $responseReview = $this->api->getRecentReviews();
-        if(!$responseReview["success"]) {
-            return redirect()->to("");
-        }
-        $reviews = $responseReview["data"];
+        $reviews = $responseReview["data"] ?? [];
 
         return view("Home/dashboard", [
             "stats"         => $stats,

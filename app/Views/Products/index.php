@@ -62,8 +62,8 @@
     <nav class="mt-5">
         <ul class="pagination justify-content-center">
             <?php for($i = 1; $i <= ($totalPages ?? 1); $i++): ?>
-                <li class="page-item <?= ($i == ($currentPage ?? 1)) ? 'active' : '' ?>">
-                    <a href="#" class="page-link"><?= $i ?></a>
+                <li class="page-item <?= ($i == ($currentPage ?? 1)) ? "active" : "" ?>">
+                    <a href="<?= base_url("/products?page=" . $i) ?>" class="page-link"><?= $i ?></a>
                 </li>
             <?php endfor; ?>
         </ul>

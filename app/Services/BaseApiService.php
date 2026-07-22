@@ -16,6 +16,15 @@ class BaseApiService
         ]);
     }
 
+    public function getTotalItemsInCart()
+    {
+        return $this->handleRequest(function() {
+            return $this->client->get("cart/total", [
+                "headers"   => $this->getHeaders()
+            ]);
+        });
+    }
+
     protected function getHeaders()
     {
         return [
@@ -35,12 +44,19 @@ class BaseApiService
             ];
         } catch(\GuzzleHttp\Exception\ClientException $e) {
             $status = $e->getResponse()->getStatusCode();
+            if($status == 409) {
+                return [
+                    "success"   => false,
+                    "message"   => "Payment is already processed"
+                ];
+            }
+            
             if($status != 401) {
                 return [
                     "success"   => false,
                     "message"   => $e->getMessage()
                 ];
-            }
+            } 
 
             $isRefreshed = $this->refreshJWTToken();
             if(!$isRefreshed) {

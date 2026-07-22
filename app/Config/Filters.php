@@ -37,6 +37,7 @@ class Filters extends BaseFilters
         'jwtauth'       => \App\Filters\JwtAuth::class,
         'merchant'      => \App\Filters\MerchantFilter::class,
         'customer'      => \App\Filters\CustomerFilter::class,
+        'superadmin'    => \App\Filters\SuperadminFilter::class
     ];
 
     /**

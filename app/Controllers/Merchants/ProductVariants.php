@@ -32,7 +32,7 @@ class ProductVariants extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products/" . $id)
+        return redirect()->to("merchant/products/" . $id)
                          ->with("message", $response["data"]["message"]);
     }
 
@@ -40,17 +40,17 @@ class ProductVariants extends BaseController
     {
         $productResponse = $this->productApi->getProduct($id);
         if(!$productResponse["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("errors", [$productResponse["message"]]);
         }
 
         $variantResponse = $this->api->getSingleVariant($id, $variant_id);
         if(!$variantResponse["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("errors", [$variantResponse["message"]]);
         }
 
-        return view("Merchants/variants/edit", [
+        return view("Variants/edit", [
             "id"        => $productResponse["data"]["id"],
             "variant"   => $variantResponse["data"]
         ]);
@@ -60,7 +60,7 @@ class ProductVariants extends BaseController
     {
         $variantResponse = $this->api->getSingleVariant($id, $variant_id);
         if(!$variantResponse["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("errors", [$variantResponse["message"]]);
         }
 
@@ -77,7 +77,7 @@ class ProductVariants extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products/" . $id)
+        return redirect()->to("merchant/products/" . $id)
                          ->with("message", $response["data"]["message"]);
     }
 
@@ -85,7 +85,7 @@ class ProductVariants extends BaseController
     {
         $variantResponse = $this->api->getSingleVariant($id, $variant_id);
         if(!$variantResponse["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("errors", [$variantResponse["message"]]);
         }
 
@@ -96,7 +96,7 @@ class ProductVariants extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products/" . $id)
+        return redirect()->to("merchant/products/" . $id)
                          ->with("message", $response["data"]["message"]);
     }
 }

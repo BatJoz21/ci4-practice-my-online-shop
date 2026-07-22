@@ -6,7 +6,7 @@ class ProductsVariantApiService extends BaseApiService {
     public function createProductVariant(int $id, array $data)
     {
         return $this->handleRequest(function() use($id, $data) {
-            return $this->client->post("products/" . $id . "/variants", [
+            return $this->client->post("merchant/products/" . $id . "/variants", [
                 "headers"       => $this->getHeaders(),
                 "json"          => $data
             ]);
@@ -16,7 +16,7 @@ class ProductsVariantApiService extends BaseApiService {
     public function getSingleVariant(int $id, int $variant_id)
     {
         return $this->handleRequest(function() use($id, $variant_id) {
-            return $this->client->get("products/" . $id . "/variants/" . $variant_id, [
+            return $this->client->get("merchant/products/" . $id . "/variants/" . $variant_id, [
                 "headers"       => $this->getHeaders()
             ]);
         });
@@ -25,7 +25,7 @@ class ProductsVariantApiService extends BaseApiService {
     public function updateProductVariant(int $id, int $variant_id, array $data)
     {
         return $this->handleRequest(function() use($id, $variant_id, $data) {
-            return $this->client->put("products/" . $id . "/variants/" . $variant_id, [
+            return $this->client->put("merchant/products/" . $id . "/variants/" . $variant_id, [
                 "headers"       => $this->getHeaders(),
                 "json"          => $data
             ]);
@@ -35,7 +35,7 @@ class ProductsVariantApiService extends BaseApiService {
     public function deleteProductVariant(int $id, int $variant_id)
     {
         return $this->handleRequest(function() use($id, $variant_id) {
-            return $this->client->delete("products/" . $id . "/variants/" . $variant_id, [
+            return $this->client->delete("merchant/products/" . $id . "/variants/" . $variant_id, [
                 "headers"       => $this->getHeaders()
             ]);
         });

@@ -11,36 +11,75 @@
                 <li class="nav-item">
                     <a class="nav-link text-light text-nowrap" href="<?= base_url('') ?>">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light text-nowrap" href="<?= base_url('products') ?>">Products</a>
-                </li>
+                <?php if(empty(session('user')) || session('user')['role'] != 'merchant'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-nowrap" href="<?= base_url('products') ?>">Products</a>
+                    </li>
+                <?php endif; ?>
                 <?php if(session()->get('logged_in')): ?>
                     <?php if(session('user')['role'] === 'customer'): ?>
-                        <li class="nav-item">
+                        <li class="nav-item me-2">
                             <a class="nav-link position-relative text-light" href="<?= base_url("cart") ?>">
                                 My Cart
                                 <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle-x">
-                                    0
+                                    <?= session("totalInCart") ?>
                                 </span>
                             </a>
                         </li>
-                    <?php elseif(session('user')['role'] === 'merchant' || session('user')['role'] === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light text-nowrap" href="<?= base_url("my-products") ?>">My Products</a>
+                            <a class="nav-link position-relative text-light" href="<?= base_url("orders") ?>">
+                                My Orders
+                            </a>
+                        </li>
+                    <?php elseif(session("user")["role"] === "merchant" || session("user")["role"] === "superadmin"): ?>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("merchant/dashboard") ?>">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light text-nowrap" href="<?= base_url("merchant/products") ?>">
+                                Our Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("merchant/orders") ?>">
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative text-light" href="<?= base_url("merchant/payments") ?>">
+                                Payments
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if(session('user')['role'] === 'superadmin'): ?>
+                        <li class="nav-item">
+                            <a href="<?= base_url("admin/users") ?>" class="nav-link position-relative text-light">Users</a>
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
             </ul>
 
-            <ul class="navbar-nav ms-auto align-items-lg-center">
+            <ul class="navbar-nav ms-auto me-3 align-items-lg-center">
                 <?php if(session()->get('logged_in')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link text-light text-nowrap" href="<?= base_url("profile") ?>"><?= esc(session('user')['name']) ?></a>
-                    </li>
-                    <li class="nav-item">
-                        <?= form_open('logout') ?>
-                            <button class="nav-link text-light" type="submit">Logout</button>
-                        </form>
+                    <li class="nav-item dropdown">
+                        <a href="#" 
+                            class="nav-link dropdown-toggle text-light text-nowrap"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"><?= esc(session("user")["name"]) ?></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                            <li>
+                                <a class="dropdown-item" href="<?= base_url("profile") ?>">Profile</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <?= form_open("logout") ?>
+                                    <button class="dropdown-item" type="submit">Logout</button>
+                                <?= form_close() ?>
+                            </li>
+                        </ul>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">

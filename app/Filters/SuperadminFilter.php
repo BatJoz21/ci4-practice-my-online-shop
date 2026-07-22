@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class MerchantFilter implements FilterInterface
+class SuperadminFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -27,11 +27,9 @@ class MerchantFilter implements FilterInterface
     {
         $role = session("user")["role"] ?? "";
 
-        if($role != "merchant") {
-            if($role != "superadmin") {
-                return redirect()->to("/")
-                                ->with("error", "Access denied!");
-            }
+        if($role != "superadmin") {
+            return redirect()->to("/")
+                             ->with("error", "Access denied!");
         }
     }
 

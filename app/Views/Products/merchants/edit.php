@@ -7,7 +7,7 @@
     <h3 class="mb-4">Edit Product</h3>
 
     <div class="border rounded-3 shadow-sm p-4" style="max-width: 700px;">
-        <?= form_open_multipart("my-products/" . $product["id"]) ?>
+        <?= form_open_multipart("merchant/products/" . $product["id"]) ?>
             <?= csrf_field() ?>
             <input type="hidden" name="_method" value="PATCH">
 
@@ -70,7 +70,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">Edit Product</button>
-                <a href="<?= base_url("my-products") ?>" class="btn btn-outline-secondary">Cancel</a>
+                <a href="<?= base_url("merchant/products") ?>" class="btn btn-outline-secondary">Cancel</a>
             </div>
         <?= form_close() ?>
     </div>

@@ -18,7 +18,7 @@
             <h2><?= esc($product["name"]) ?></h2>
 
             <p class="fs-3 fw-bold text-primary" id="displayPrice">
-                Rp<?= number_format($product['price'], 0, ',', '.') ?>
+                Rp<?= number_format($product["price"], 0, ',', '.') ?>
             </p>
 
             <p class="text-muted"><?= esc($product["description"]) ?></p>
@@ -37,8 +37,8 @@
                                     data-stock="<?= $variant['stock'] ?>"
                                     <?= ($variant["stock"] <= 0) ? "disabled" : "" ?>
                                 >
-                                    <?= esc($variant['name']) ?>
-                                    <?= $variant["stock"] <= 0 ? '(Out of stock)' : '' ?>
+                                    <?= esc($variant["name"]) ?>
+                                    <?= $variant["stock"] <= 0 ? "(Out of stock)" : "" ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -52,7 +52,11 @@
                         value="1" min="1" style="max-width: 120px;">
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="addToCartBtn">Add to cart</button>
+                <?php if(session("logged_in")): ?>
+                    <button type="submit" class="btn btn-primary btn-lg" id="addToCartBtn">Add to cart</button>
+                <?php else: ?>
+                    <a href="<?= base_url("login") ?>" class="btn btn-primary btn-lg">Log in to purchase</a>
+                <?php endif; ?>
             <?= form_close() ?>
         </div>
     <?php endif; ?>
@@ -73,7 +77,14 @@
                 <?php foreach($reviews as $review): ?>
                     <div class="border-bottom pb-3 mb-3">
                         <div class="d-flex justify-content-between">
-                            <!-- ToDo: review UI -->
+                            <strong><?= esc($review["username"]) ?></strong>
+                            <span class="text-warning">
+                                <?= str_repeat("★", $review["rating"]) . str_repeat("☆", 5 - $review["rating"]) ?>
+                            </span>
+                            <p class="text-muted small mb-1">
+                                <?= date('d M Y', strtotime($review["created_at"])) ?>
+                            </p>
+                            <p class="mb-0"><?= esc($review["comment"]) ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>

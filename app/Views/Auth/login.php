@@ -6,16 +6,16 @@
 
     <div class="container">
         <h2 class="text-center my-4">Login</h2>
-        <div class="border rounded-3 shadow mx-auto p-4" style="width: 500px;">
+        <div class="border rounded-3 shadow mx-auto p-4" style="max-width: 500px;">
             <?= form_open("login") ?>
-                <div class="mb-3 row" style="width: 400px;">
+                <div class="mb-3 row">
                     <label for="email" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" name="email" id="email">
                     </div>
                 </div>
 
-                <div class="mb-3 row" style="width: 400px;">
+                <div class="mb-3 row">
                     <label for="password" class="col-sm-3 col-form-label">Password</label>
                     <div class="col-sm-9">
                         <input type="password" class="form-control" name="password" id="password">
@@ -26,7 +26,7 @@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
-            </form>
+            <?= form_close() ?>
         </div>
     </div>
 

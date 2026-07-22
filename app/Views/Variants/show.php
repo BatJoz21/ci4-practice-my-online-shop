@@ -13,7 +13,7 @@
                 <h4 class="mb-0"><?= esc($product["name"]) ?></h4>
                 <span class="text-muted">Base price: Rp<?= number_format($product['price'], 0, ',', '.') ?></span>
             </div>
-            <a href="<?= base_url("my-products") ?>" class="btn btn-outline-secondary btn-sm ms-auto">
+            <a href="<?= base_url("merchant/products") ?>" class="btn btn-outline-secondary btn-sm ms-auto">
                 &larr; Back to Products
             </a>
         </div>
@@ -42,18 +42,18 @@
                                 <?= $variant["price_modifier"] >= 0 ? '+' : '' ?>Rp<?= number_format($variant["price_modifier"], 0, ',', '.') ?>
                             </td>
                             <td class="text-end">
-                                <?php if ($variant['stock'] <= 0): ?>
+                                <?php if ($variant["stock"] <= 0): ?>
                                     <span class="badge bg-danger">Out of stock</span>
                                 <?php else: ?>
                                     <?= $variant['stock'] ?>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?= base_url("my-products/" . $product["id"] . "/variants/" . $variant["id"] . "/edit") ?>" 
+                                <a href="<?= base_url("merchant/products/" . $product["id"] . "/variants/" . $variant["id"] . "/edit") ?>" 
                                     class="btn btn-sm btn-outline-primary">Edit</a>
                             </td>
                             <td class="text-center">
-                                <?= form_open("my-products/" . $product["id"] . "/variants/" . $variant["id"]) ?>
+                                <?= form_open("merchant/products/" . $product["id"] . "/variants/" . $variant["id"]) ?>
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button
@@ -78,7 +78,7 @@
         <!-- Add new variant -->
         <div class="border rounded-3 shadow-sm p-4" style="max-width: 600px;">
             <h6 class="mb-3">Add Variant</h6>
-            <?= form_open("my-products/" . $product["id"] . "/variants") ?>
+            <?= form_open("merchant/products/" . $product["id"] . "/variants") ?>
                 <?= csrf_field() ?>
                 
                 <div class="mb-3">

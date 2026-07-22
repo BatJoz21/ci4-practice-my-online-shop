@@ -18,11 +18,11 @@ class Products extends BaseController
     {
         $response = $this->api->getAllCategory();
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Categories not found");
         }
 
-        return view("Merchants/products/create", ["categories" => $response["data"]]);
+        return view("Products/merchants/create", ["categories" => $response["data"]]);
     }
 
     public function create()
@@ -58,36 +58,46 @@ class Products extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products")
+        return redirect()->to("merchant/products")
                          ->with("message", $response["data"]["message"]);
     }
 
     public function index()
     {
-        $response = $this->api->getProducts();
+        $page = $this->request->getGet("page") ?? "1";
+        $search = $this->request->getGet("search") ?? "";
 
-        if($response["success"]) {
-            return view("Merchants/products/index", ["products" => $response["data"]]);
+        $response = $this->api->getProducts($page, $search);
+
+        if(!$response["success"]) {
+            return redirect()->to("")
+                             ->with("error", "Failed to fetch data");
         }
 
-        return view("Products/index"); // ToDo: make a custom error page
+        $products = $response["data"] ?? [];
+        $totalPages = ceil(count($products));
+
+        return view("Products/merchants/index", [
+            "products"      => $products,
+            "totalPages"    => $totalPages
+        ]);
     }
 
     public function show(int $id)
     {
         $response = $this->api->getProduct($id);
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Product not found");
         }
 
         $response2 = $this->api->getVariantsOfAProduct($id);
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("errors", [$response2["message"]]);
         }
 
-        return view("Merchants/variants/show", [
+        return view("Variants/show", [
             "product"   => $response["data"],
             "variants"  => $response2["data"]
         ]);
@@ -97,17 +107,17 @@ class Products extends BaseController
     {
         $response = $this->api->getProduct($id);
         if(!$response["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Product not found");
         }
 
         $response2 = $this->api->getAllCategory();
         if(!$response2["success"]) {
-            return redirect()->to("my-products")
+            return redirect()->to("merchant/products")
                              ->with("error", "Categories not found");
         }
 
-        return view("Merchants/products/edit", [
+        return view("Products/merchants/edit", [
             "product"       => $response["data"],
             "categories"    => $response2["data"]
         ]);
@@ -147,7 +157,19 @@ class Products extends BaseController
                              ->withInput();
         }
 
-        return redirect()->to("my-products")
+        return redirect()->to("merchant/products")
+                         ->with("message", $response["data"]["message"]);
+    }
+
+    public function delete(int $id)
+    {
+        $response = $this->api->deleteProduct($id);
+        if(!$response["success"]) {
+            return redirect()->back()
+                             ->with("errors", [$response["message"]]);
+        }
+
+        return redirect()->to("merchant/products")
                          ->with("message", $response["data"]["message"]);
     }
 }

@@ -1,69 +1,95 @@
-# CodeIgniter 4 Application Starter
+# MyOnlineShop Web (CI4 Frontend)
 
-## What is CodeIgniter?
+A **CodeIgniter 4** + **Bootstrap 5** consumer frontend for the MyOnlineShop practice project. Renders all customer- and merchant-facing pages and talks to a separate [Go/Gin API](#) for all data — this repo has no business logic of its own beyond presentation, session handling, and (for a small number of pages) direct read access to the shared database.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Tech Stack
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- **CodeIgniter 4** — sections-based view templating (`extend`/`section`)
+- **Bootstrap 5** + **Bootstrap Icons** — UI
+- **Guzzle** — HTTP client for calling the Go API
+- **Docker** — PHP 8.2 + Apache image
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Features
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- Role-aware navbar and layout (guest / customer / merchant)
+- Product catalog with search, category filter, and pagination
+- Product detail page with size-variant selection (price/stock update via vanilla JS)
+- Cart and checkout
+- Customer order history with a visual status tracker, and a Pay Now button that initiates a Midtrans Snap payment
+- Merchant product, variant, and order management
+- Merchant dashboard (summary stats, recent orders, low-stock alert, recent reviews)
+- Product review submission, gated to completed orders
+- Session-based JWT storage with automatic refresh-token retry on 401
 
-## Installation & updates
+## Project Structure
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+```
+.
+├── app/
+│   ├── Controllers/
+│   │   ├── Customers/     # Customer-facing controllers
+│   │   ├── Merchants/     # Merchant-facing controllers
+│   │   └── Admin/         # Admin-facing controllers
+│   ├── Services/          # BaseApiService + per-domain API service classes
+│   ├── Views/
+│   │   ├── Layouts/       # Shared layout, navbar, footer
+│   │   ├── products/, cart/, orders/, merchant/, ...
+│   └── Config/
+├── public/                 # Web root (Apache DocumentRoot)
+├── entrypoint.sh            # Docker container startup script (see below)
+└── Dockerfile
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## How This App Talks to the API
 
-## Setup
+All API calls go through `BaseApiService`, extended by per-domain service classes (`CartApiService`, `PaymentApiService`, etc.). It centralizes:
+- Attaching the JWT (`Authorization: Bearer ...`) from session to every request
+- Automatic refresh-token retry on a `401` response
+- Consistent `{ success, data | message }` return shape for controllers to check
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+When adding a new API-backed feature, add a method to the relevant service class (or create a new one extending `BaseApiService`) rather than calling Guzzle directly from a controller.
 
-## Important Change with index.php
+## Environment Variables
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+| Variable | Description | Example |
+|---|---|---|
+| `API_BASE_URL` | Base URL of the Go API | `http://goapi:8080/` (Docker) / `http://localhost:8080/` (local) |
+| `app.baseURL` | CI4's own base URL, used by `base_url()`/`site_url()` | `http://myonlineshop.localhost/` |
+| `database.default.hostname` | Direct DB connection host (used by a small number of controllers) | `mysql` |
+| `database.default.database` | Database name | `myonlineshop` |
+| `database.default.username` | Database user | |
+| `database.default.password` | Database password | |
+| `database.default.port` | Database port | `3306` |
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+> **Note on Docker + dotted variable names:** environment variable names containing dots (like `database.default.hostname`) are not valid POSIX identifiers and get silently dropped from a container's init-process environment. This repo's `entrypoint.sh` works around that by accepting plain, underscore-named variables from Docker Compose (`DB_HOSTNAME`, `APP_BASE_URL`, etc.) and writing them into a real `.env` file at container startup, which CI4's own `Dotenv` loader then reads normally. See `docker-compose.yml` in the deployment repo for the exact variable names Compose passes in.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+## Running Locally (without Docker)
 
-## Repository Management
+Requires PHP 8.2+ with the `intl`, `mbstring`, and `mysqli` extensions, Composer, and a running instance of the Go API.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+```bash
+composer install
+cp env .env   # then fill in the variables above
+php spark serve
+```
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## Running with Docker
 
-## Server Requirements
+This service is designed to run as part of the full stack via Docker Compose alongside the Go API and MariaDB (see the deployment repo/directory). To build just this image standalone:
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+```bash
+docker build -t mos-web .
+docker run -p 80:80 \
+  -e API_BASE_URL="http://host.docker.internal:8080/" \
+  -e APP_BASE_URL="http://myonlineshop.localhost/" \
+  -e DB_HOSTNAME="host.docker.internal" \
+  -e DB_DATABASE="myonlineshop" \
+  -e DB_USERNAME="..." \
+  -e DB_PASSWORD="..." \
+  -e DB_PORT="3306" \
+  mos-web
+```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+## Notes
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+This is a learning/practice project built alongside a companion Go API repo. Payment flows are tested against Midtrans's **sandbox** environment only.

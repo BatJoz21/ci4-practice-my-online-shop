@@ -11,7 +11,7 @@ class BaseApiService
     public function __construct()
     {
         $this->client = new Client([
-            "base_uri"      => "http://localhost:8080/",
+            "base_uri"      => env("API_BASE_URL", "http://localhost:8080/"),
             "timeout"       => 10
         ]);
     }

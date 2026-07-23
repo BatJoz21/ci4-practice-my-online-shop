@@ -199,6 +199,12 @@ class Database extends Config
         // we don't overwrite live data on accident.
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
+
+            $this->default['hostname'] = env('database.default.hostname', $this->default['hostname']);
+            $this->default['database'] = env('database.default.database', $this->default['database']);
+            $this->default['username'] = env('database.default.username', $this->default['username']);
+            $this->default['password'] = env('database.default.password', $this->default['password']);
+            $this->default['port']     = (int) env('database.default.port', $this->default['port']);
         }
     }
 }

@@ -9,9 +9,6 @@ $routes->post('register', 'Auth::register');
 $routes->get('login', 'Auth::loginPage');
 $routes->post('login', 'Auth::login');
 $routes->post('logout', 'Auth::logout');
-$routes->get('session-test', function () {
-    dd(session()->get());
-});
 
 $routes->get('products', 'Products::index');
 $routes->get('products/(:num)/image', 'Products::getProductImage/$1');

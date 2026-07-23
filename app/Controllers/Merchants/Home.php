@@ -18,6 +18,9 @@ class Home extends BaseController
     {
         $responseStats = $this->api->getDashboardStats();
         $stats = $responseStats["data"] ?? [];
+        if(!empty($stats)) {
+            $stats["total_revenue"] = "Rp " . number_format($stats["total_revenue"] ?? "0", 0, ",", ".");
+        }
 
         $responseOrders = $this->api->getRecentOrders();
         $recentOrders = $responseOrders["data"] ?? [];
@@ -34,5 +37,16 @@ class Home extends BaseController
             "lowStockItems" => $lowStocked,
             "reviews"       => $reviews
         ]);
+    }
+
+    public function getStats()
+    {
+        $responseStats = $this->api->getDashboardStats();
+        $stats = $responseStats["data"] ?? [];
+        if(!empty($stats)) {
+            $stats["total_revenue"] = "Rp " . number_format($stats["total_revenue"] ?? "0", 0, ",", ".");
+        }
+
+        return $this->response->setJSON($stats);
     }
 }

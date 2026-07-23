@@ -4,7 +4,10 @@
 
 <?= $this->section("main") ?>
 
-    <h3 class="mb-4">Dashboard</h3>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Dashboard</h3>
+        <button class="btn btn-outline-primary" onclick="refreshDashboardStats()">Refresh</button>
+    </div>
 
     <!-- Summary Cards -->
     <div class="row g-3 mb-4">
@@ -12,7 +15,7 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Total Products</p>
-                    <h3 class="mb-0"><?= $stats["total_products"] ?? "0" ?></h3>
+                    <h3 id="totalProducts" class="mb-0"><?= $stats["total_products"] ?? "0" ?></h3>
                 </div>
             </div>
         </div>
@@ -20,7 +23,7 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Pending Orders</p>
-                    <h3 class="mb-0"><?= $stats["pending_orders"] ?? "0" ?></h3>
+                    <h3 id="pendingOrders" class="mb-0"><?= $stats["pending_orders"] ?? "0" ?></h3>
                 </div>
             </div>
         </div>
@@ -28,7 +31,7 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Total Revenue</p>
-                    <h3 class="mb-0">Rp <?= number_format($stats["total_revenue"] ?? "0", 0, ",", ".") ?></h3>
+                    <h3 id="totalRevenue" class="mb-0"><?= $stats["total_revenue"] ?? "Rp 0" ?></h3>
                     <p class="text-muted small mb-0">From completed orders</p>
                 </div>
             </div>
@@ -37,7 +40,7 @@
             <div class="card shadow-sm h-100 <?= ($stats["low_stock_count"] ?? 0) > 0 ? "border-warning" : "" ?>">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Low Stock Item</p>
-                    <h3 class="mb-0 <?= ($stats["low_stock_count"] ?? 0) > 0 ? "text-warning" : "" ?>"><?= $stats["low_stock_count"] ?? "0" ?></h3>
+                    <h3 id="lowStockCount" class="mb-0 <?= ($stats["low_stock_count"] ?? 0) > 0 ? "text-warning" : "" ?>"><?= $stats["low_stock_count"] ?? "0" ?></h3>
                 </div>
             </div>
         </div>
@@ -140,5 +143,22 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function refreshDashboardStats()
+        {
+            fetch('dashboard/stats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalProducts').textContent = data.total_products;
+                    document.getElementById('pendingOrders').textContent = data.pending_orders;
+                    document.getElementById('totalRevenue').textContent = data.total_revenue;
+                    document.getElementById('lowStockCount').textContent = data.low_stock_count;
+                })
+                .catch(error => {
+                    console.error(error)
+                });
+        }
+    </script>
 
 <?= $this->endSection() ?>

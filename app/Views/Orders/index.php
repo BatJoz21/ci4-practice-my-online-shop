@@ -38,11 +38,6 @@
                             </div>
 
                             <div class="col-md-2">
-                                <p class="mb-1 text-muted small">Date</p>
-                                <p class="mb-0"><?= date("d M Y", strtotime($order["created_at"])) ?></p>
-                            </div>
-
-                            <div class="col-md-2">
                                 <p class="mb-1 text-muted small">Estimated Arrival Date</p>
                                 <?php if(!empty($order["estimated_arrival"])): ?>
                                     <p class="mb-0"><?= date("d M Y", strtotime($order["estimated_arrival"])) ?></p>
@@ -65,7 +60,7 @@
                                 </p>
                             </div>
 
-                            <div class="col-md-2 text-md-end">
+                            <div class="col-md-3 text-md-end">
                                 <?php if($order["status"] != "cancelled"): ?>
                                     <a href="<?= base_url("orders/" . $order["id"]) ?>" class="btn btn-outline-primary btn-sm">
                                         View Details
